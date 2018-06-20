@@ -233,6 +233,7 @@ def train_model(epochs=50):
 
 
 import sys
+from datetime import datetime
 if __name__ == "__main__":
     args = sys.argv[1:]
     nb_epochs = 50 # default is 50 epochs
@@ -241,4 +242,13 @@ if __name__ == "__main__":
 
 
     print('Will process %d epochs.' % nb_epochs)
+
+    start_time = datetime.now()
+    print('Start at : ', start_time.strftime('%Y-%m-%d %H:%M:%S.%s'))
     train_model(nb_epochs)
+
+    end_time = datetime.now()
+    print('End at : ', start_time.strftime('%Y-%m-%d %H:%M:%S.%s'))
+    spend_time = end_time - start_time
+
+    print('Total Spent:', spend_time)
