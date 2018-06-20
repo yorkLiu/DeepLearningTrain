@@ -237,7 +237,7 @@ from datetime import datetime
 if __name__ == "__main__":
     args = sys.argv[1:]
     nb_epochs = 50 # default is 50 epochs
-    if len(args) > 1:
+    if len(args) > 0:
         nb_epochs = int(args[0])
 
 
