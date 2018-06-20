@@ -214,7 +214,7 @@ def lr_scheduler(epoch, mode='power_decay'):
 
 
 
-def train_model(epochs=50):
+def train_model(epochs, steps_per_epoch):
     model_file = 'Jrtt_capcha_model.h5'
     if os.path.exists(model_file):
         print('Load captcha model from %s' % model_file)
@@ -227,7 +227,7 @@ def train_model(epochs=50):
     save_model_callback = ModelCheckpoint('Jrtt_capcha_model.h5', monitor='acc', save_best_only=True)
     learning_rate_callback = LearningRateScheduler(lr_scheduler)
 
-    model.fit_generator(JrttCaptchaGenerator(batch_size), steps_per_epoch=100, epochs=epochs,
+    model.fit_generator(JrttCaptchaGenerator(batch_size), steps_per_epoch=steps_per_epoch, epochs=epochs,
                         callbacks=[save_model_callback])
 
 
@@ -236,19 +236,22 @@ import sys
 from datetime import datetime
 if __name__ == "__main__":
     args = sys.argv[1:]
-    nb_epochs = 50 # default is 50 epochs
+    nb_epochs = 10 # default is 50 epochs
+    steps_per_epoch = 100 # default is 100
     if len(args) > 0:
         nb_epochs = int(args[0])
+        if len(args) > 1:
+            steps_per_epoch = int(args[1])
 
 
     print('Will process %d epochs.' % nb_epochs)
 
     start_time = datetime.now()
-    print('Start at : ', start_time.strftime('%Y-%m-%d %H:%M:%S.%s'))
-    train_model(nb_epochs)
+    print('Start at: %s' % start_time.strftime('%Y-%m-%d %H:%M:%S.%s'))
+    train_model(nb_epochs, steps_per_epoch)
 
     end_time = datetime.now()
-    print('End at : ', start_time.strftime('%Y-%m-%d %H:%M:%S.%s'))
+    print('End at: %s' % start_time.strftime('%Y-%m-%d %H:%M:%S.%s'))
     spend_time = end_time - start_time
 
-    print('Total Spent:', spend_time)
+    print('Total Spent: %s' % ':'.join(str(spend_time).split(':')))
